@@ -1,0 +1,688 @@
+<html lang="en">
+<!-- This is a fully working example of the BP SDK, you only need to replace the 
+BP SDK URL (LINK_TO_YOUR_BPSDK) and App Secret (YOUR_BPSDK_APP_SECRET) for those displayed in your BulletProof Portal under the section BP SDK
+Some dummy data is loaded with the function load_testing_data()
+-->  
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400;1,500;1,700&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      media="all"
+    />
+    <style>
+      /* The Modal (background) , only displayed if custom or dynamic 3DS */
+      .modal-issue {
+        display: block;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1000;
+        /* Sit on top */
+        left: 0;
+        top: 20%;
+        width: 100%;
+        /* Full width */
+        /*height: 100%;*/
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Black w/ opacity */
+      }
+    </style>
+    <title>BP SDK</title>
+  </head>
+  <body>
+    <div class="container">
+      <div style="width: 350px"></div>
+      <div class="main__content">
+        <div class="inner-default max-1360">
+          <div class="product-gray-bg">
+            <div class="product-info">
+              <div class="summary-step">
+                <div class="heading-bar accord-link">
+                  <h1>Payment Information</h1>
+                  <div class="icon-down">
+                    <em class="fas fa-chevron-down"></em>
+                    <em class="fas fa-chevron-right"></em>
+                  </div>
+                </div>
+                <div class="step-3" style="padding-bottom: 55px !important">
+                  <!--Beginning of Form  -->
+                  <form id="billing-form" action="" method="post">
+                    <ul>
+                      <!--Add the data-threeds="" DOM elements tags in your payment form-->
+
+                      <!-- Currency on ISO4217 Three digits code -->
+                      <li class="med">
+                        <label>Currency</label>
+                        <select name="bpcurrency" data-threeds="currency">
+                          <option value="840" selected>USD</option>
+                          <option value="826">GBP</option>
+                          <option value="484">MXN</option>
+                          <option value="978">EUR</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Amount</label>
+                        <input
+                          type="text"
+                          name="bpamount"
+                          value="10"
+                          data-threeds="amount"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li class="med">
+                        <label>Credit Card Number</label>
+                        <input
+                          type="text"
+                          name="bppan"
+                          value=""
+                          data-threeds="pan"
+                          maxlength="19"
+                          pattern="[0-9]*"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <!--First + Last Name-->
+                        <label>Name on Card</label>
+                        <input
+                          type="text"
+                          name="bpcardHolderName"
+                          value=""
+                          data-threeds="cardHolderName"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>Card Expiration Month</label>
+                        <!-- month needs to be a two-digits string -->
+                        <select name="bpmonth" data-threeds="month">
+                          <option value="01" selected>January</option>
+                          <option value="02">February</option>
+                          <option value="03">March</option>
+                          <option value="04">April</option>
+                          <option value="05">May</option>
+                          <option value="06">June</option>
+                          <option value="07">July</option>
+                          <option value="08">August</option>
+                          <option value="09">September</option>
+                          <option value="10">October</option>
+                          <option value="11">November</option>
+                          <option value="12">December</option>
+                        </select>
+                      </li>
+
+                      <li class="med">
+                        <label>Card Expiration Year</label>
+                        <!-- year needs to be a two-digits string -->
+                        <select name="bpyear" data-threeds="year">
+                          <option value="24" selected>24</option>
+                          <option value="25">25</option>
+                          <option value="26">26</option>
+                          <option value="27">27</option>
+                          <option value="28">28</option>
+                          <option value="29">29</option>
+                          <option value="30">30</option>
+                          <option value="31">31</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>CVV</label>
+                        <input
+                          type="text"
+                          name="bpcvv"
+                          value=""
+                          data-threeds="cvv"
+                          maxlength="4"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>E-mail</label>
+                        <input
+                          type="text"
+                          name="bpemail"
+                          value=""
+                          data-threeds="email"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+                    </ul>
+                    <ul id="phonenumberdata" name="phonenumberdata">
+                      <li class="med">
+                        <label>Mobile Country Code</label>
+                        <!--Range 1-3 characters -->
+                        <select
+                          name="bpmobileCC"
+                          data-threeds="mobileCC"
+                          onchange="check_if_phone_exists(this.value,'mobilePhoneNum');"
+                        >
+                          <option value="">No Phone Number</option>
+                          <option value="1" selected>+001 - USA</option>
+                          <option value="1">+001 - CAD</option>
+                          <option value="52">+052 - MEX</option>
+                          <option value="44">+044 - GBR</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Mobile Phone Number</label>
+                        <input
+                          type="text"
+                          name="bpmobilePhoneNum"
+                          value=""
+                          data-threeds="mobilePhoneNum"
+                          maxlength="15"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li class="med">
+                        <label>Home Country Code</label>
+                        <!--Range 1-3 characters -->
+                        <select
+                          name="bphomeCC"
+                          data-threeds="homeCC"
+                          onchange="check_if_phone_exists(this.value,'homePhoneNum');"
+                        >
+                          <option value="" selected>No Phone Number</option>
+                          <option value="1">+001 - USA</option>
+                          <option value="1">+001 - CAD</option>
+                          <option value="52">+052 - MEX</option>
+                          <option value="44">+044 - GBR</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Home Phone Number</label>
+                        <input
+                          type="text"
+                          name="bpHomePhoneNum"
+                          value=""
+                          data-threeds="homePhoneNum"
+                          maxlength="15"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>Work Country Code</label>
+                        <!--Range 1-3 characters -->
+                        <select
+                          name="bpworkCC"
+                          data-threeds="workCC"
+                          onchange="check_if_phone_exists(this.value,'workPhoneNum');"
+                        >
+                          <option value="" selected>No Phone Number</option>
+                          <option value="1">+001 - USA</option>
+                          <option value="1">+001 - CAD</option>
+                          <option value="52">+052 - MEX</option>
+                          <option value="44">+044 - GBR</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Work Phone Number</label>
+                        <input
+                          type="text"
+                          name="bpworkPhoneNum"
+                          value=""
+                          data-threeds="workPhoneNum"
+                          maxlength="15"
+                          class="input_field"
+                        />
+                      </li>
+                    </ul>
+                    <ul id="billingdata" name="billingdata">
+                      <li>
+                        <label>Billing Address</label>
+                        <input
+                          type="text"
+                          name="bpbillingLine1"
+                          value=""
+                          data-threeds="billingLine1"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li>
+                        <!--Can be excluded if not applicable. For apartment #, suite, etc.-->
+                        <label>Billing Address 2</label>
+                        <input
+                          type="text"
+                          name="bpbillingLine2"
+                          value=""
+                          data-threeds="billingLine2"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li>
+                        <!--Can be excluded if not applicable. For apartment #, department, etc.-->
+                        <label>Billing Address 3</label>
+                        <input
+                          type="text"
+                          name="billingLine3"
+                          value=""
+                          data-threeds="billingLine3"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li class="med">
+                        <label>Billing Country</label>
+                        <select
+                          name="bpbillingCountry"
+                          data-threeds="billingCountry"
+                        >
+                          <option value="840" selected>United States</option>
+                          <option value="826">United Kingdom</option>
+                          <option value="124">Canada</option>
+                          <option value="484">Mexico</option>
+                          <option value="380">Italy</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Billing State</label>
+                        <input
+                          type="text"
+                          name="bpbillingState"
+                          value=""
+                          data-threeds="billingState"
+                          maxlength="3"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>Billing City</label>
+                        <input
+                          type="text"
+                          name="bpbillingCity"
+                          value=""
+                          data-threeds="billingCity"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li class="med">
+                        <label>Billing Postal Code</label>
+                        <!-- Billing zip code is only required for US customers, international customers can use their own postal codes -->
+                        <input
+                          type="text"
+                          name="bpbillingPostCode"
+                          value=""
+                          data-threeds="billingPostCode"
+                          maxlength="10"
+                          class="input_field"
+                        />
+                      </li>
+                    </ul>
+                    <ul>
+                      <li class="med">
+                        <!--"Y" or "N" are the only values accepted-->
+                        <label>Same Shipping and Billing Address</label>
+                        <select
+                          name="bpaddrMatch"
+                          id="bpaddrMatch"
+                          data-threeds="addrMatch"
+                          onchange="show_shipping_fields();"
+                        >
+                          <option value="Y" selected>Yes</option>
+                          <option value="N">No</option>
+                        </select>
+                      </li>
+                    </ul>
+                    <ul
+                      id="shippingdata"
+                      name="shippingdata"
+                      style="display: none"
+                    >
+                      <li>
+                        <label>Shipping Address </label>
+                        <input
+                          type="text"
+                          name="bpshippingLine1"
+                          value=""
+                          data-threeds="shippingLine1"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li>
+                        <!--Can be excluded if not applicable. For apartment #, suite, etc.-->
+                        <label>Shipping Address 2</label>
+                        <input
+                          type="text"
+                          name="bpshippingLine2"
+                          value=""
+                          data-threeds="shippingLine2"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li>
+                        <!--Can be excluded if not applicable. For apartment #, department, etc.-->
+                        <label>Shipping Address 3</label>
+                        <input
+                          type="text"
+                          name="bpshippingLine3"
+                          value=""
+                          data-threeds="shippingLine3"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>Shipping Country</label>
+                        <select
+                          name="bpshippingCountry"
+                          data-threeds="shippingCountry"
+                        >
+                          <option value="840" selected>United States</option>
+                          <option value="826">United Kingdom</option>
+                          <option value="124">Canada</option>
+                          <option value="484">Mexico</option>
+                          <option value="380">Italy</option>
+                        </select>
+                      </li>
+                      <li class="med">
+                        <label>Shipping State</label>
+                        <input
+                          type="text"
+                          name="bpshippingState"
+                          value=""
+                          data-threeds="shippingState"
+                          maxlength="3"
+                          class="input_field"
+                        />
+                      </li>
+                      <li class="med">
+                        <label>Shipping City</label>
+                        <input
+                          type="text"
+                          name="bpshippingCity"
+                          value=""
+                          data-threeds="shippingCity"
+                          maxlength="50"
+                          class="input_field"
+                        />
+                      </li>
+
+                      <li class="med">
+                        <label>Shipping Postal Code</label>
+                        <input
+                          type="text"
+                          name="bpshippingPostCode"
+                          value=""
+                          data-threeds="shippingPostCode"
+                          maxlength="10"
+                          class="input_field"
+                        />
+                      </li>
+                    </ul>
+
+                    <div style="text-align: center">
+                      <button
+                        class="btn btn-yellow"
+                        id="submit_btn"
+                        style="
+                          width: auto !important;
+                          height: auto !important;
+                          font-weight: 700 !important;
+                          font-style: italic !important;
+                          font-size: 1.375rem !important;
+                          font-family: Poppins, sans-serif !important;
+                          border-radius: 50px !important;
+                          margin: 0px 5px !important;
+                        "
+                        onclick="launch_verify(); return false;"
+                      >
+                        Submit
+                      </button>
+                      <button
+                        class="btn btn-black"
+                        id="clear_btn"
+                        style="
+                          width: auto !important;
+                          height: auto !important;
+                          font-weight: 700 !important;
+                          font-style: italic !important;
+                          font-size: 1.375rem !important;
+                          font-family: Poppins, sans-serif !important;
+                          border-radius: 50px !important;
+                          margin: 0px 5px !important;
+                        "
+                        onclick="jQuery('.input_field').val(''); jQuery('#bpaddrMatch').val('Y'); show_shipping_fields(); return false;"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </form>
+                  <!-- End of page -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Libraries -->
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.5/umd/popper.min.js"
+      integrity="sha512-8cU710tp3iH9RniUh6fq5zJsGnjLzOWLWdZqBMLtqaoZUA6AWIE34lwMB3ipUNiTBP5jEZKY95SfbNnQ8cCKvA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"
+      integrity="sha512-OvBgP9A2JBgiRad/mM36mkzXSXaJE9BEIENnVEmeZdITvwT09xnxLtT4twkCa8m/loMbPHsvPl0T8lRGVBwjlQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <!-- The URL for the next script is provided in the BulletProof Portal in the section BP SDK-->
+    <script src="https://LINK_TO_YOUR_BPSDK"></script>
+    <script>
+      var challenge_was_displayed = false;
+      // Integration procedure for the BP SDK
+      // Syntax: new BPThreeDS("formID","App Secret","IframeID for challenge popup");
+      var BPSDK = new BPThreeDS(
+        "billing-form",
+        "YOUR_BPSDK_APP_SECRET",
+        "bp_iframe"
+      );
+
+      function launch_verify() {
+        BPSDK.verify(
+          "myapprovalfunction",
+          "myrejectedfunction",
+          "mychallengedisplayfunction",
+          "mychallengecompletedfunction"
+        );
+      }
+
+      function myapprovalfunction(response) {
+        let msg = "";
+        if (response != undefined) {
+          if (response.status != undefined) {
+            msg += "status = " + response.status + "\n";
+          }
+          if (response.acsTransId != undefined) {
+            msg += "acsTransId = " + response.acsTransId + "\n";
+          }
+          if (response.authenticationValue != undefined) {
+            msg +=
+              "authenticationValue = " + response.authenticationValue + "\n";
+          }
+          if (response.dsTransId != undefined) {
+            msg += "dsTransId = " + response.dsTransId + "\n";
+          }
+          if (response.eci != undefined) {
+            msg += "eci = " + response.eci + "\n";
+          }
+          if (response.protocolVersion != undefined) {
+            msg += "protocolVersion = " + response.protocolVersion + "\n";
+          }
+          if (response.scaIndicator != undefined) {
+            msg += "scaIndicator = " + response.scaIndicator + "\n";
+          }
+
+          if (msg != "") {
+            msg = "\n\n3DS data received:\n" + msg;
+          }
+        }
+        alert("Got a 3DS Approval" + msg);
+
+        // This is where you decide what to do after receiving a 3DS approval.
+      }
+
+      function myrejectedfunction(response) {
+        let msg = "";
+        if (response != undefined) {
+          if (response.status != undefined) {
+            msg += "status = " + response.status + "\n";
+          }
+          if (response.acsTransId != undefined) {
+            msg += "acsTransId = " + response.acsTransId + "\n";
+          }
+          if (response.dsTransId != undefined) {
+            msg += "dsTransId = " + response.dsTransId + "\n";
+          }
+          if (response.eci != undefined) {
+            msg += "eci = " + response.eci + "\n";
+          }
+          if (response.protocolVersion != undefined) {
+            msg += "protocolVersion = " + response.protocolVersion + "\n";
+          }
+          if (response.scaIndicator != undefined) {
+            msg += "scaIndicator = " + response.scaIndicator + "\n";
+          }
+          if (response.transStatusReason != undefined) {
+            msg += "transStatusReason = " + response.transStatusReason + "\n";
+          }
+          if (response.transStatusReasonDetail != undefined) {
+            msg +=
+              "transStatusReasonDetail = " +
+              response.transStatusReasonDetail +
+              "\n";
+          }
+          if (msg != "") {
+            msg = "\n\n3DS data received:\n" + msg;
+          }
+        }
+        alert("Got a 3DS Rejection" + msg);
+        // This is where you decide what to do after receiving a 3DS rejection.
+      }
+
+      function mychallengedisplayfunction() {
+        // This is where you decide what to do when the Challenge Popup was displayed
+        console.log("3DS Challenge Popup was triggered");
+        challenge_was_displayed = true;
+        jQuery("#bp_iframe").height(520);
+        jQuery("#bp_iframe").addClass("modal-issue");
+      }
+
+      function mychallengecompletedfunction() {
+        // This is where you decide what to do when the Challenge is completed
+        if (challenge_was_displayed) {
+          console.log("3DS Challenge was completed");
+          jQuery("#bp_iframe").remove("modal-issue");
+        }
+      }
+    </script>
+
+    <script>
+      // Functions for support the HTML form , this functions are not required by the BP SDK
+      function show_shipping_fields() {
+        if (jQuery("#bpaddrMatch").val() == "Y") {
+          jQuery("#shippingdata").hide();
+        } else {
+          jQuery("#shippingdata").show();
+        }
+      }
+
+      function check_if_phone_exists(sourcevalue, targetfield) {
+        if (targetfield != "") {
+          if (sourcevalue == "") {
+            jQuery("[data-threeds=" + targetfield + "]").val("");
+            jQuery("[data-threeds=" + targetfield + "]").prop("disabled", true);
+            jQuery("[data-threeds=" + targetfield + "]").css(
+              "background-color",
+              "lightgray"
+            );
+          } else {
+            jQuery("[data-threeds=" + targetfield + "]").prop(
+              "disabled",
+              false
+            );
+            jQuery("[data-threeds=" + targetfield + "]").css(
+              "background-color",
+              "white"
+            );
+          }
+        }
+      }
+
+      function load_testing_data() {
+        jQuery("[data-threeds=amount]").val("1");
+        jQuery("[data-threeds=cardHolderName]").val("Jhon Doe");
+        jQuery("[data-threeds=pan]").val("4005519200000004");
+        jQuery("[data-threeds=cvv]").val("321");
+        jQuery("[data-threeds=currency]").val("840");
+        jQuery("[data-threeds=year]").val("25");
+        jQuery("[data-threeds=email]").val("a_valid_email@goes_here.com");
+        jQuery("[data-threeds=mobileCC]").val("1");
+        jQuery("[data-threeds=mobilePhoneNum]").val("3051234567");
+        jQuery("[data-threeds=homeCC]").val("");
+        jQuery("[data-threeds=workCC]").val("");
+        check_if_phone_exists("", "homePhoneNum");
+        check_if_phone_exists("", "workPhoneNum");
+        jQuery("[data-threeds=billingLine1]").val("Av44th");
+        jQuery("[data-threeds=billingLine2]").val("33 St");
+        jQuery("[data-threeds=billingCountry]").val("840");
+        jQuery("[data-threeds=billingState]").val("AZ");
+        jQuery("[data-threeds=billingCity]").val("Tempe");
+        jQuery("[data-threeds=billingPostCode]").val("85284");
+        jQuery("[data-threeds=addrMatch]").val("Y");
+        show_shipping_fields();
+      }
+
+      jQuery(document).ready(function () {
+        load_testing_data();
+      });
+    </script>
+  </body>
+</html>
